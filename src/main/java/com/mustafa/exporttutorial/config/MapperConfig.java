@@ -1,4 +1,4 @@
-package com.mustafa.apachepoitutorial.config;
+package com.mustafa.exporttutorial.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;

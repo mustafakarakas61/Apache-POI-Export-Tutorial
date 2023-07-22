@@ -1,6 +1,6 @@
-package com.mustafa.apachepoitutorial.repository;
+package com.mustafa.exporttutorial.repository;
 
-import com.mustafa.apachepoitutorial.entity.UserEntity;
+import com.mustafa.exporttutorial.entity.UserEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

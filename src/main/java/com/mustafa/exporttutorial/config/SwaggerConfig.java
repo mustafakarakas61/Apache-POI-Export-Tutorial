@@ -1,4 +1,4 @@
-package com.mustafa.apachepoitutorial.config;
+package com.mustafa.exporttutorial.config;
 
 import com.google.common.base.Predicates;
 import org.springframework.context.annotation.Bean;
@@ -27,7 +27,7 @@ public class SwaggerConfig extends WebMvcConfigurationSupport {
                 .useDefaultResponseMessages(Boolean.FALSE)
                 .apiInfo(new ApiInfoBuilder()
                         .version("1.0")
-                        .title("Apache Poi Tutorial")
+                        .title("Export Tutorial")
                         .description("Excel, Word, Powerpoint, Pdf")
                         .build());
     }

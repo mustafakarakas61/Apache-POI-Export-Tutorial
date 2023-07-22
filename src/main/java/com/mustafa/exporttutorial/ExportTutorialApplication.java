@@ -1,13 +1,13 @@
-package com.mustafa.apachepoitutorial;
+package com.mustafa.exporttutorial;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class ApachePoiTutorialApplication {
+public class ExportTutorialApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(ApachePoiTutorialApplication.class, args);
+		SpringApplication.run(ExportTutorialApplication.class, args);
 	}
 
 }

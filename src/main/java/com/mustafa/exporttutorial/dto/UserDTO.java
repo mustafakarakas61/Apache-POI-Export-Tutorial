@@ -1,4 +1,4 @@
-package com.mustafa.apachepoitutorial.dto;
+package com.mustafa.exporttutorial.dto;
 
 import lombok.Getter;
 import lombok.Setter;

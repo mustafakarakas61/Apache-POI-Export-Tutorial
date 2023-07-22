@@ -1,4 +1,4 @@
-package com.mustafa.apachepoitutorial.entity;
+package com.mustafa.exporttutorial.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

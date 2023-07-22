@@ -1,14 +1,14 @@
-package com.mustafa.apachepoitutorial.controller;
+package com.mustafa.exporttutorial.controller;
 
-import com.mustafa.apachepoitutorial.service.ExcelService;
-import com.mustafa.apachepoitutorial.service.UserService;
+import com.itextpdf.text.DocumentException;
+import com.mustafa.exporttutorial.service.export.ExcelService;
+import com.mustafa.exporttutorial.service.UserService;
+import com.mustafa.exporttutorial.service.export.PDFService;
 import org.apache.poi.util.IOUtils;
-import org.springframework.core.io.ByteArrayResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -20,11 +20,14 @@ import java.io.IOException;
 public class ExportController {
 
     private final UserService userService;
-    private final ExcelService excelService;
 
-    public ExportController(UserService userService, ExcelService excelService) {
+    private final ExcelService excelService;
+    private final PDFService pdfService;
+
+    public ExportController(UserService userService, ExcelService excelService, PDFService pdfService) {
         this.userService = userService;
         this.excelService = excelService;
+        this.pdfService = pdfService;
     }
 
     @GetMapping(value = "/excel", produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
@@ -40,4 +43,16 @@ public class ExportController {
         return new ResponseEntity<>(excelBytes, headers, 200);
     }
 
+    @GetMapping(value = "/pdf", produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
+    public ResponseEntity<byte[]> exportToPDF() throws IOException, DocumentException {
+        ByteArrayInputStream pdfData = pdfService.exportToPDF(userService.readUserList());
+
+        byte[] pdfBytes = IOUtils.toByteArray(pdfData);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
+        headers.setContentDispositionFormData("attachment", "user_list.pdf");
+
+        return new ResponseEntity<>(pdfBytes, headers, 200);
+    }
 }
