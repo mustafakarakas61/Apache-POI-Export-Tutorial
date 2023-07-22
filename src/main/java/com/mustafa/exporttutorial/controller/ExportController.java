@@ -4,6 +4,8 @@ import com.itextpdf.text.DocumentException;
 import com.mustafa.exporttutorial.service.export.ExcelService;
 import com.mustafa.exporttutorial.service.UserService;
 import com.mustafa.exporttutorial.service.export.PDFService;
+import com.mustafa.exporttutorial.service.export.PowerPointService;
+import com.mustafa.exporttutorial.service.export.WordService;
 import org.apache.poi.util.IOUtils;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -22,11 +24,16 @@ public class ExportController {
     private final UserService userService;
 
     private final ExcelService excelService;
+    private final PowerPointService powerPointService;
+    private final WordService wordService;
     private final PDFService pdfService;
 
-    public ExportController(UserService userService, ExcelService excelService, PDFService pdfService) {
+
+    public ExportController(UserService userService, ExcelService excelService, PowerPointService powerPointService, WordService wordService, PDFService pdfService) {
         this.userService = userService;
         this.excelService = excelService;
+        this.powerPointService = powerPointService;
+        this.wordService = wordService;
         this.pdfService = pdfService;
     }
 
@@ -41,6 +48,32 @@ public class ExportController {
         headers.setContentDispositionFormData("attachment", "user_list.xlsx");
 
         return new ResponseEntity<>(excelBytes, headers, 200);
+    }
+
+    @GetMapping(value = "/powerpoint", produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
+    public ResponseEntity<byte[]> exportToPowerPoint() throws IOException {
+        ByteArrayInputStream pptData = powerPointService.exportToPowerPoint(userService.readUserList());
+
+        byte[] pptBytes = IOUtils.toByteArray(pptData);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
+        headers.setContentDispositionFormData("attachment", "user_list.pptx");
+
+        return new ResponseEntity<>(pptBytes, headers, 200);
+    }
+
+    @GetMapping(value = "/word", produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
+    public ResponseEntity<byte[]> exportToWord() throws IOException {
+        ByteArrayInputStream wordData = wordService.exportToWord(userService.readUserList());
+
+        byte[] wordBytes = IOUtils.toByteArray(wordData);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
+        headers.setContentDispositionFormData("attachment", "user_list.docx");
+
+        return new ResponseEntity<>(wordBytes, headers, 200);
     }
 
     @GetMapping(value = "/pdf", produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
