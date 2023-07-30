@@ -1,6 +1,9 @@
 package com.mustafa.exporttutorial.service.export;
 
 import com.mustafa.exporttutorial.dto.UserDTO;
+import com.mustafa.exporttutorial.model.MongoDataModel;
+import com.mustafa.exporttutorial.service.MongoDataService;
+import com.mustafa.exporttutorial.service.export.base.BaseService;
 import org.apache.poi.common.usermodel.HyperlinkType;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFCellStyle;
@@ -16,22 +19,16 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 @Service
-public class ExcelService {
+public class ExcelService extends BaseService {
 
-    private final String[] titles = {
-            "R.Nu",
-            "name",
-            "surname",
-            "age",
-            "city",
-            "birthday"
-    };
+    protected ExcelService(MongoDataService mongoDataService) {
+        super(mongoDataService);
+    }
 
-    public ByteArrayInputStream exportToExcel(List<UserDTO> userDTOs) throws IOException {
+    public ByteArrayInputStream exportToExcel() throws IOException {
         XSSFWorkbook workbook = new XSSFWorkbook();
 //        Map<String, CellStyle> styles = createStyles(workbook);
         Sheet sheet = workbook.createSheet(LocalDate.now().format(DateTimeFormatter.ISO_LOCAL_DATE));
@@ -51,8 +48,9 @@ public class ExcelService {
 
         Row row;
         int rowNum = 1;
-        for (UserDTO userDTO :
-                userDTOs) {
+        for (MongoDataModel mongoDataModel :
+                mongoDataService.readAllData()) {
+            UserDTO userDTO = mongoDataModel.getUserDTO();
             row = sheet.createRow(rowNum);
             Integer index = -1;
 

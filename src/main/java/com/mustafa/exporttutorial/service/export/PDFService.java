@@ -6,6 +6,8 @@ import java.util.List;
 
 import com.itextpdf.text.*;
 import com.mustafa.exporttutorial.dto.UserDTO;
+import com.mustafa.exporttutorial.service.MongoDataService;
+import com.mustafa.exporttutorial.service.export.base.BaseService;
 import org.springframework.stereotype.Service;
 
 import com.itextpdf.text.pdf.PdfPCell;
@@ -13,15 +15,11 @@ import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
 
 @Service
-public class PDFService {
-    private final String[] titles = {
-            "R.Nu",
-            "name",
-            "surname",
-            "age",
-            "city",
-            "birthday"
-    };
+public class PDFService extends BaseService {
+
+    protected PDFService(MongoDataService mongoDataService) {
+        super(mongoDataService);
+    }
 
     public ByteArrayInputStream exportToPDF(List<UserDTO> userDTOs) throws DocumentException {
         Document document = new Document();

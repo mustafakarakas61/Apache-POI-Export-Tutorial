@@ -1,6 +1,8 @@
 package com.mustafa.exporttutorial.service.export;
 
 import com.mustafa.exporttutorial.dto.UserDTO;
+import com.mustafa.exporttutorial.service.MongoDataService;
+import com.mustafa.exporttutorial.service.export.base.BaseService;
 import org.apache.poi.xslf.usermodel.XMLSlideShow;
 import org.apache.poi.xslf.usermodel.XSLFSlide;
 import org.apache.poi.xslf.usermodel.XSLFTextShape;
@@ -14,7 +16,11 @@ import java.io.IOException;
 import java.util.List;
 
 @Service
-public class PowerPointService {
+public class PowerPointService extends BaseService {
+
+    protected PowerPointService(MongoDataService mongoDataService) {
+        super(mongoDataService);
+    }
 
     public ByteArrayInputStream exportToPowerPoint(List<UserDTO> userDTOs) throws IOException {
         XMLSlideShow ppt = new XMLSlideShow();

@@ -11,3 +11,8 @@ spring:
     show-sql: true
     hibernate:
       ddl-auto: update
+  data:
+    mongodb:
+      host: localhost
+      port: 27017
+      database: export-tutorial

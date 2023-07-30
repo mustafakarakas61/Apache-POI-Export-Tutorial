@@ -1,6 +1,10 @@
 package com.mustafa.exporttutorial.controller;
 
 import com.itextpdf.text.DocumentException;
+import com.mustafa.exporttutorial.dto.UserDTO;
+import com.mustafa.exporttutorial.entity.UserEntity;
+import com.mustafa.exporttutorial.model.MongoDataModel;
+import com.mustafa.exporttutorial.service.MongoDataService;
 import com.mustafa.exporttutorial.service.export.ExcelService;
 import com.mustafa.exporttutorial.service.UserService;
 import com.mustafa.exporttutorial.service.export.PDFService;
@@ -22,6 +26,7 @@ import java.io.IOException;
 public class ExportController {
 
     private final UserService userService;
+    private final MongoDataService mongoDataService;
 
     private final ExcelService excelService;
     private final PowerPointService powerPointService;
@@ -29,8 +34,9 @@ public class ExportController {
     private final PDFService pdfService;
 
 
-    public ExportController(UserService userService, ExcelService excelService, PowerPointService powerPointService, WordService wordService, PDFService pdfService) {
+    public ExportController(UserService userService, MongoDataService mongoDataService, ExcelService excelService, PowerPointService powerPointService, WordService wordService, PDFService pdfService) {
         this.userService = userService;
+        this.mongoDataService = mongoDataService;
         this.excelService = excelService;
         this.powerPointService = powerPointService;
         this.wordService = wordService;
@@ -39,7 +45,15 @@ public class ExportController {
 
     @GetMapping(value = "/excel", produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
     public ResponseEntity<byte[]> exportExcel() throws IOException {
-        ByteArrayInputStream excelData = excelService.exportToExcel(userService.readUserList());
+
+        for(UserDTO userDTO : userService.readUserList()) {
+            MongoDataModel mongoDataModel = new MongoDataModel();
+            mongoDataModel.setUserDTO(userDTO);
+            mongoDataService.createData(mongoDataModel);
+        }
+        mongoDataService.deleteAllData();
+
+        ByteArrayInputStream excelData = excelService.exportToExcel();
 
         byte[] excelBytes = IOUtils.toByteArray(excelData);
 

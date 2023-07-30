@@ -1,6 +1,8 @@
 package com.mustafa.exporttutorial.service.export;
 
 import com.mustafa.exporttutorial.dto.UserDTO;
+import com.mustafa.exporttutorial.service.MongoDataService;
+import com.mustafa.exporttutorial.service.export.base.BaseService;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.apache.poi.xwpf.usermodel.XWPFParagraph;
 import org.apache.poi.xwpf.usermodel.XWPFRun;
@@ -12,7 +14,11 @@ import java.io.IOException;
 import java.util.List;
 
 @Service
-public class WordService {
+public class WordService extends BaseService {
+
+    protected WordService(MongoDataService mongoDataService) {
+        super(mongoDataService);
+    }
 
     public ByteArrayInputStream exportToWord(List<UserDTO> userDTOs) throws IOException {
         XWPFDocument doc = new XWPFDocument();
